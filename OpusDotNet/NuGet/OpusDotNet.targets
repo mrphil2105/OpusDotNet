@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Target Name="OpusDotNetPlatformCheck" BeforeTargets="ResolveAssemblyReferences" Condition="'$(Platform)' != 'x86' AND '$(Platform)' != 'x64'">
+    <Error Text="$(MSBuildThisFileName) contains unmanaged resources, set your project and solution platform to x86 or x64." />
+  </Target>
+
+  <ItemGroup Condition="'$(Platform)' == 'x86'">
+    <None Include="@(OpusRedistWinX86)">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Platform)' == 'x64'">
+    <None Include="@(OpusRedistWinX64)">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
