@@ -160,21 +160,19 @@ namespace OpusDotNet
             int result;
 
             fixed (byte* input = opusBytes)
+            fixed (byte* output = pcmBytes)
             {
-                fixed (byte* output = pcmBytes)
-                {
-                    var inputPtr = new IntPtr((void*)input);
-                    var outputPtr = new IntPtr((void*)output);
+                var inputPtr = (IntPtr)input;
+                var outputPtr = (IntPtr)output;
 
-                    if (opusBytes != null)
-                    {
-                        result = API.opus_decode(_handle, inputPtr, length, outputPtr, _samples, 0);
-                    }
-                    else
-                    {
-                        // If forward error correction is enabled, this will indicate a packet loss.
-                        result = API.opus_decode(_handle, IntPtr.Zero, 0, outputPtr, _samples, FEC ? 1 : 0);
-                    }
+                if (opusBytes != null)
+                {
+                    result = API.opus_decode(_handle, inputPtr, length, outputPtr, _samples, 0);
+                }
+                else
+                {
+                    // If forward error correction is enabled, this will indicate a packet loss.
+                    result = API.opus_decode(_handle, IntPtr.Zero, 0, outputPtr, _samples, FEC ? 1 : 0);
                 }
             }
 

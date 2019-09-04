@@ -292,13 +292,11 @@ namespace OpusDotNet
             int samples = API.GetSampleCount(frameSize, SampleRate);
 
             fixed (byte* input = pcmBytes)
+            fixed (byte* output = opusBytes)
             {
-                fixed (byte* output = opusBytes)
-                {
-                    var inputPtr = new IntPtr((void*)input);
-                    var outputPtr = new IntPtr((void*)output);
-                    result = API.opus_encode(_handle, inputPtr, samples, outputPtr, opusBytes.Length);
-                }
+                var inputPtr = (IntPtr)input;
+                var outputPtr = (IntPtr)output;
+                result = API.opus_encode(_handle, inputPtr, samples, outputPtr, opusBytes.Length);
             }
 
             API.ThrowIfError(result);
