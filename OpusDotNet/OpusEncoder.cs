@@ -116,6 +116,32 @@ namespace OpusDotNet
         }
 
         /// <summary>
+        /// Gets or sets the maximum bandpass.
+        /// </summary>
+        public Bandwidth MaxBandwidth
+        {
+            get
+            {
+                ThrowIfDisposed();
+                int result = API.opus_encoder_ctl(_handle, (int)Control.GetMaxBandwidth, out int value);
+                API.ThrowIfError(result);
+
+                return (Bandwidth)value;
+            }
+            set
+            {
+                if (!Enum.IsDefined(typeof(Bandwidth), value))
+                {
+                    throw new ArgumentException("Value is not defined in the enumeration.", nameof(value));
+                }
+
+                ThrowIfDisposed();
+                int result = API.opus_encoder_ctl(_handle, (int)Control.SetMaxBandwidth, (int)value);
+                API.ThrowIfError(result);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the computational complexity, 0 - 10. Decreasing this will decrease CPU time, at the expense of quality.
         /// </summary>
         public int Complexity

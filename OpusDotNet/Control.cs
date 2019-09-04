@@ -5,6 +5,9 @@
         SetBitrate = 4002,
         //GetBitrate = 4003,
 
+        SetMaxBandwidth = 4004,
+        GetMaxBandwidth = 4005,
+
         SetVBR = 4006,
         GetVBR = 4007,
 
