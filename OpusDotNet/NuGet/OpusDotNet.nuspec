@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>OpusDotNet</id>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <description>An easy-to-use library for encoding and decoding 16-bit audio using the Opus Audio Codec. NOTE: This library is a wrapper around the official libopus, and does not contain code for parsing .opus container files.</description>
     <authors>mrphil2105</authors>
     <license type="expression">MIT</license>
@@ -13,6 +13,8 @@
       <dependency id="OpusDotNet.opus.win-x86" version="1.3.1" />
       <dependency id="OpusDotNet.opus.win-x64" version="1.3.1" />
     </dependencies>
+
+    <releaseNotes>Added max bandwidth option. IMPORTANT: Removed the "E" prefix on enums.</releaseNotes>
   </metadata>
   <files>
     <file src="..\bin\Release\netstandard2.0\*.*" target="lib\netstandard2.0" />
