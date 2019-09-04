@@ -1,6 +1,6 @@
 ﻿namespace OpusDotNet
 {
-    internal enum EControl
+    internal enum Control
     {
         SetBitrate = 4002,
         //GetBitrate = 4003,

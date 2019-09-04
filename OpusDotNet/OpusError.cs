@@ -3,7 +3,7 @@
     /// <summary>
     /// Specifies the possible errors when using Opus.
     /// </summary>
-    public enum EOpusError
+    public enum OpusError
     {
         /// <summary>
         /// One or more invalid/out of range arguments.

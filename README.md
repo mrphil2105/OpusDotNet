@@ -14,7 +14,7 @@ Install-Package OpusDotNet
 ### Basic Usage
 A simple example of encoding and decoding audio:
 ```csharp
-using (var encoder = new OpusEncoder(EApplication.Audio, 48000, 2)
+using (var encoder = new OpusEncoder(Application.Audio, 48000, 2)
 {
     Bitrate = 128000, // 128 kbps
     VBR = true // Variable bitrate

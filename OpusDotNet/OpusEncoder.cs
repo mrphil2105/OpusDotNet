@@ -15,7 +15,7 @@ namespace OpusDotNet
         /// Initializes a new <see cref="OpusEncoder"/> instance, with the specified intended application, 48000 Hz sample rate and 2 channels.
         /// </summary>
         /// <param name="application">The intended application.</param>
-        public OpusEncoder(EApplication application) : this(application, 48000, 2)
+        public OpusEncoder(Application application) : this(application, 48000, 2)
         {
         }
 
@@ -25,9 +25,9 @@ namespace OpusDotNet
         /// <param name="application">The intended application.</param>
         /// <param name="sampleRate">The sample rate in the input audio, 48000, 24000, 16000, 12000 or 8000 Hz.</param>
         /// <param name="channels">The channels in the input audio, mono or stereo.</param>
-        public OpusEncoder(EApplication application, int sampleRate, int channels)
+        public OpusEncoder(Application application, int sampleRate, int channels)
         {
-            if (!Enum.IsDefined(typeof(EApplication), application))
+            if (!Enum.IsDefined(typeof(Application), application))
             {
                 throw new ArgumentException("Value is not defined in the enumeration.", nameof(application));
             }
@@ -58,14 +58,14 @@ namespace OpusDotNet
             API.ThrowIfError(error);
 
             // Setting to -1 (OPUS_BITRATE_MAX) enables bitrate to be regulated by the output buffer length.
-            int result = API.opus_encoder_ctl(_handle, (int)EControl.SetBitrate, -1);
+            int result = API.opus_encoder_ctl(_handle, (int)Control.SetBitrate, -1);
             API.ThrowIfError(result);
         }
 
         /// <summary>
         /// Gets the intended application.
         /// </summary>
-        public EApplication Application { get; }
+        public Application Application { get; }
 
         /// <summary>
         /// Gets the sample rate, 48000, 24000, 16000, 12000 or 8000 Hz.
@@ -102,7 +102,7 @@ namespace OpusDotNet
             get
             {
                 ThrowIfDisposed();
-                int result = API.opus_encoder_ctl(_handle, (int)EControl.GetVBR, out int value);
+                int result = API.opus_encoder_ctl(_handle, (int)Control.GetVBR, out int value);
                 API.ThrowIfError(result);
 
                 return value == 1;
@@ -110,7 +110,7 @@ namespace OpusDotNet
             set
             {
                 ThrowIfDisposed();
-                int result = API.opus_encoder_ctl(_handle, (int)EControl.SetVBR, value ? 1 : 0);
+                int result = API.opus_encoder_ctl(_handle, (int)Control.SetVBR, value ? 1 : 0);
                 API.ThrowIfError(result);
             }
         }
@@ -123,7 +123,7 @@ namespace OpusDotNet
             get
             {
                 ThrowIfDisposed();
-                int result = API.opus_encoder_ctl(_handle, (int)EControl.GetComplexity, out int value);
+                int result = API.opus_encoder_ctl(_handle, (int)Control.GetComplexity, out int value);
                 API.ThrowIfError(result);
 
                 return value;
@@ -136,7 +136,7 @@ namespace OpusDotNet
                 }
 
                 ThrowIfDisposed();
-                int result = API.opus_encoder_ctl(_handle, (int)EControl.SetComplexity, value);
+                int result = API.opus_encoder_ctl(_handle, (int)Control.SetComplexity, value);
                 API.ThrowIfError(result);
             }
         }
@@ -150,7 +150,7 @@ namespace OpusDotNet
             get
             {
                 ThrowIfDisposed();
-                int result = API.opus_encoder_ctl(_handle, (int)EControl.GetInbandFEC, out int value);
+                int result = API.opus_encoder_ctl(_handle, (int)Control.GetInbandFEC, out int value);
                 API.ThrowIfError(result);
 
                 return value == 1;
@@ -158,7 +158,7 @@ namespace OpusDotNet
             set
             {
                 ThrowIfDisposed();
-                int result = API.opus_encoder_ctl(_handle, (int)EControl.SetInbandFEC, value ? 1 : 0);
+                int result = API.opus_encoder_ctl(_handle, (int)Control.SetInbandFEC, value ? 1 : 0);
                 API.ThrowIfError(result);
             }
         }
@@ -172,7 +172,7 @@ namespace OpusDotNet
             get
             {
                 ThrowIfDisposed();
-                int result = API.opus_encoder_ctl(_handle, (int)EControl.GetPacketLossPerc, out int value);
+                int result = API.opus_encoder_ctl(_handle, (int)Control.GetPacketLossPerc, out int value);
                 API.ThrowIfError(result);
 
                 return value;
@@ -185,7 +185,7 @@ namespace OpusDotNet
                 }
 
                 ThrowIfDisposed();
-                int result = API.opus_encoder_ctl(_handle, (int)EControl.SetPacketLossPerc, value);
+                int result = API.opus_encoder_ctl(_handle, (int)Control.SetPacketLossPerc, value);
                 API.ThrowIfError(result);
             }
         }
@@ -199,7 +199,7 @@ namespace OpusDotNet
             get
             {
                 ThrowIfDisposed();
-                int result = API.opus_encoder_ctl(_handle, (int)EControl.GetDTX, out int value);
+                int result = API.opus_encoder_ctl(_handle, (int)Control.GetDTX, out int value);
                 API.ThrowIfError(result);
 
                 return value == 1;
@@ -207,7 +207,7 @@ namespace OpusDotNet
             set
             {
                 ThrowIfDisposed();
-                int result = API.opus_encoder_ctl(_handle, (int)EControl.SetDTX, value ? 1 : 0);
+                int result = API.opus_encoder_ctl(_handle, (int)Control.SetDTX, value ? 1 : 0);
                 API.ThrowIfError(result);
             }
         }
@@ -215,25 +215,25 @@ namespace OpusDotNet
         /// <summary>
         /// Gets or sets the forced mono/stereo mode.
         /// </summary>
-        public EForceChannels ForceChannels
+        public ForceChannels ForceChannels
         {
             get
             {
                 ThrowIfDisposed();
-                int result = API.opus_encoder_ctl(_handle, (int)EControl.GetForceChannels, out int value);
+                int result = API.opus_encoder_ctl(_handle, (int)Control.GetForceChannels, out int value);
                 API.ThrowIfError(result);
 
-                return (EForceChannels)value;
+                return (ForceChannels)value;
             }
             set
             {
-                if (!Enum.IsDefined(typeof(EForceChannels), value))
+                if (!Enum.IsDefined(typeof(ForceChannels), value))
                 {
                     throw new ArgumentException("Value is not defined in the enumeration.", nameof(value));
                 }
 
                 ThrowIfDisposed();
-                int result = API.opus_encoder_ctl(_handle, (int)EControl.SetForceChannels, (int)value);
+                int result = API.opus_encoder_ctl(_handle, (int)Control.SetForceChannels, (int)value);
                 API.ThrowIfError(result);
             }
         }

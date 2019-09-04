@@ -11,33 +11,33 @@ namespace OpusDotNet
         /// Initializes a new <see cref="OpusException"/> instance, with the specified Opus error code.
         /// </summary>
         /// <param name="errorCode">The Opus error code.</param>
-        public OpusException(int errorCode) : base(GetMessage((EOpusError)errorCode))
+        public OpusException(int errorCode) : base(GetMessage((OpusError)errorCode))
         {
-            Error = (EOpusError)errorCode;
+            Error = (OpusError)errorCode;
         }
 
         /// <summary>
         /// The Opus error.
         /// </summary>
-        public EOpusError Error { get; }
+        public OpusError Error { get; }
 
-        private static string GetMessage(EOpusError error)
+        private static string GetMessage(OpusError error)
         {
             switch (error)
             {
-                case EOpusError.BadArg:
+                case OpusError.BadArg:
                     return "One or more invalid/out of range arguments.";
-                case EOpusError.BufferTooSmall:
+                case OpusError.BufferTooSmall:
                     return "Not enough bytes allocated in the buffer.";
-                case EOpusError.InternalError:
+                case OpusError.InternalError:
                     return "An internal error was detected.";
-                case EOpusError.InvalidPacket:
+                case OpusError.InvalidPacket:
                     return "The compressed data passed is corrupted.";
-                case EOpusError.Unimplemented:
+                case OpusError.Unimplemented:
                     return "Invalid/unsupported request number.";
-                case EOpusError.InvalidState:
+                case OpusError.InvalidState:
                     return "An encoder or decoder structure is invalid or already freed.";
-                case EOpusError.AllocFail:
+                case OpusError.AllocFail:
                     return "Memory allocation has failed.";
                 default:
                     return "An unknown error has occurred.";

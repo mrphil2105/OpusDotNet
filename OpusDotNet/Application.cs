@@ -3,7 +3,7 @@
     /// <summary>
     /// Specifies the intended applications.
     /// </summary>
-    public enum EApplication
+    public enum Application
     {
         /// <summary>
         /// Process signal for improved speech intelligibility.

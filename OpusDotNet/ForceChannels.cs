@@ -3,7 +3,7 @@
     /// <summary>
     /// Specifies the modes for forced mono/stereo.
     /// </summary>
-    public enum EForceChannels
+    public enum ForceChannels
     {
         /// <summary>
         /// Not forced.
