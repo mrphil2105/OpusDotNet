@@ -80,6 +80,7 @@ namespace OpusDotNet
         /// <summary>
         /// Gets or sets the bitrate, 8000 - 512000 bps.
         /// </summary>
+        [Obsolete("This property was used for the old encode method and is deprecated, please use the new encode method instead.")]
         public int Bitrate
         {
             get => _bitrate;
@@ -271,6 +272,7 @@ namespace OpusDotNet
         /// <param name="length">The maximum number of bytes to use from <paramref name="pcmBytes"/>.</param>
         /// <param name="encodedLength">The length of the encoded audio.</param>
         /// <returns>A byte array containing the encoded audio.</returns>
+        [Obsolete("This method is deprecated, please use the new encode method instead.")]
         public unsafe byte[] Encode(byte[] pcmBytes, int length, out int encodedLength)
         {
             if (pcmBytes == null)
@@ -322,6 +324,79 @@ namespace OpusDotNet
 
             encodedLength = result;
             return opusBytes;
+        }
+
+        /// <summary>
+        /// Encodes an Opus frame, the frame size must be one of the following: 2.5, 5, 10, 20, 40 or 60 ms.
+        /// </summary>
+        /// <param name="pcmBytes">The Opus frame.</param>
+        /// <param name="pcmLength">The maximum number of bytes to read from <paramref name="pcmBytes"/>.</param>
+        /// <param name="opusBytes">The buffer that the encoded audio will be stored in.</param>
+        /// <param name="opusLength">The maximum number of bytes to write to <paramref name="opusBytes"/>.
+        /// This will determine the bitrate in the encoded audio.</param>
+        /// <returns>The number of bytes written to <paramref name="opusBytes"/>.</returns>
+        public unsafe int Encode(byte[] pcmBytes, int pcmLength, byte[] opusBytes, int opusLength)
+        {
+            if (pcmBytes == null)
+            {
+                throw new ArgumentNullException(nameof(pcmBytes));
+            }
+
+            if (pcmLength < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(pcmLength), "Value cannot be negative.");
+            }
+
+            if (pcmBytes.Length < pcmLength)
+            {
+                throw new ArgumentOutOfRangeException(nameof(pcmLength), $"Value cannot be greater than the length of {nameof(pcmBytes)}.");
+            }
+
+            if (opusBytes == null)
+            {
+                throw new ArgumentNullException(nameof(opusBytes));
+            }
+
+            if (opusLength < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(opusLength), "Value cannot be negative.");
+            }
+
+            if (opusBytes.Length < opusLength)
+            {
+                throw new ArgumentOutOfRangeException(nameof(opusLength), $"Value cannot be greater than the length of {nameof(opusBytes)}.");
+            }
+
+            double frameSize = API.GetFrameSize(pcmLength, SampleRate, Channels);
+
+            switch (frameSize)
+            {
+                case 2.5:
+                case 5:
+                case 10:
+                case 20:
+                case 40:
+                case 60:
+                    break;
+                default:
+                    throw new ArgumentException("The frame size must be one of the following: 2.5, 5, 10, 20, 40 or 60.", nameof(pcmLength));
+            }
+
+            ThrowIfDisposed();
+
+            int result;
+            int samples = API.GetSampleCount(frameSize, SampleRate);
+
+            fixed (byte* input = pcmBytes)
+            fixed (byte* output = opusBytes)
+            {
+                var inputPtr = (IntPtr)input;
+                var outputPtr = (IntPtr)output;
+                result = API.opus_encode(_handle, inputPtr, samples, outputPtr, opusLength);
+            }
+
+            API.ThrowIfError(result);
+            return result;
         }
 
         /// <summary>
