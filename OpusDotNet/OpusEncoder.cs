@@ -305,13 +305,6 @@ namespace OpusDotNet
 
             ThrowIfDisposed();
 
-            if (pcmBytes.Length > length)
-            {
-                byte[] pcmBytes_ = new byte[length];
-                Buffer.BlockCopy(pcmBytes, 0, pcmBytes_, 0, length);
-                pcmBytes = pcmBytes_;
-            }
-
             byte[] opusBytes = new byte[(int)(frameSize * Bitrate / 8 / 1000)];
             int result;
 
